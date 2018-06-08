@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body %}
+<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>
+				<span></span>
+				<ul class="subnav">
+					<li><a href="{% url 'books:list' type_id=1 page=1 %}" class="python">Python</a></li>
+                    <li><a href="{% url 'books:list' type_id=2 page=1 %}" class="javascript">Javascript</a></li>
+                    <li><a href="{% url 'books:list' type_id=3 page=1 %}" class="algorithms">数据结构与算法</a></li>
+                    <li><a href="{% url 'books:list' type_id=4 page=1 %}" class="machinelearning">机器学习</a></li>
+                    <li><a href="{% url 'books:list' type_id=5 page=1 %}" class="operatingsystem">操作系统</a></li>
+                    <li><a href="{% url 'books:list' type_id=6 page=1 %}" class="database">数据库</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="http://bang.dangdang.com/books/">图书排行榜</a></li>
+				<li class="interval">|</li>
+				<li><a href="http://e.dangdang.com/index_page.html">电子书</a></li>
+				<li class="interval">|</li>
+				<li><a href="http://e.dangdang.com/new_original_index_page.html">网络文学</a></li>
+                <li class="interval">|</li>
+				<li><a href="http://book.dangdang.com/01.03.htm">小说</a></li>
+                <li class="interval">|</li>
+				<li><a href="http://book.dangdang.com/01.28.htm">哲学宗教</a></li>
+                <li class="interval">|</li>
+				<li><a href="http://book.dangdang.com/01.01.htm">青春文学</a></li>
+                <li class="interval">|</li>
+				<li><a href="http://book.dangdang.com/01.15.htm">亲子家教</a></li>
+                <li class="interval">|</li>
+				<li><a href="http://book.dangdang.com/01.18.htm">保健养生</a></li>
+                <li class="interval">|</li>
+				<li><a href="http://book.dangdang.com/01.21.htm">成功励志</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>></span>
+		<a href="#">Python</a>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_book">
+				<h3>新品推荐</h3>
+				<ul>
+                    {% for book in books_now %}
+					<li>
+						<a href="{% url 'books:detail' books_id=book.id %}"><img src="{% static book.image %}"></a>
+						<h4><a href="{% url 'books:detail' books_id=book.id %}">{{ book.name }}</a></h4>
+						<div class="prize">￥{{ book.price }}</div>
+					</li>
+                    {% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="/list/{{ type_id }}/1/" {% if sort == 'default' %}class="active"{% endif %}>默认</a>
+                <a href="/list/{{ type_id }}/1/?sort=price" {% if sort == 'price' %}class="active"{% endif %}>价格</a>
+                <a href="/list/{{ type_id }}/1/?sort=hot" {% if sort == 'hot' %}class="active"{% endif %}>人气</a>
+			</div>
+
+			<ul class="book_type_list clearfix">
+                {% for book in books_li %}
+				<li>
+					<a href="{% url 'books:detail' books_id=book.id %}"><img src="{% static book.image %}"></a>
+					<h4><a href="{% url 'books:detail' books_id=book.id %}">{{ book.name }}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{ book.price }}</span>
+						<span class="unit">{{ book.unit }}</span>
+						<a href="#" class="add_book" title="加入购物车"></a>
+					</div>
+				</li>
+                {% endfor %}
+			</ul>
+
+			<div class="pagenation">
+				{% if books_li.has_previous %}
+                    <a href="/list/{{ type_id }}/{{ books_li.previous_page_number }}/?sort={{ sort }}">上一页</a>
+                {% endif %}
+				{% for pindex in pages %}
+                    {% if pindex == books_li.number %}
+                        <a href="/list/{{ type_id }}/{{ pindex }}/?sort={{ sort }}"class="active">{{ pindex }}</a>
+                    {% else %}
+                        <a href="/list/{{ type_id }}/{{ pindex }}/sort={{ sort }}">{{ pindex }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if books_li.has_next %}
+				    <a href="/list/{{ type_id }}/{{ books_li.next_page_number }}/?sort={{ sort }}">下一页></a>
+                {% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock body %}

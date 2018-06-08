@@ -1,0 +1,109 @@
+<meta charset="UTF-8">
+
+<style type="text/css">
+    #div1{
+    margin: auto;
+    border: 1px beige solid;
+    width: 512px;
+    text-align: right;
+    }
+    ul{
+    list-style-type: none;
+    list-style-image: url(../../static/images/8809.jpg_wh1200.jpg);
+    }
+    .box{
+    width: 400px;
+    height: 150px;
+    /*background-color: yellow;*/
+    border: 1px darkgray solid;
+    border-radius: 30px;
+    position: relative;
+    }
+    .box .touxiang{
+    width: 80px;
+    height: 80px;
+    background-image: url(../../static/images/8809.jpg_wh1200.jpg);
+    background-size: 100% 100%;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    }
+    .box .nicheng{
+    width: 80px;
+    height:25px ;
+    /*background-color: red;*/
+    position: absolute;
+    left: 10px;
+    top: 100px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 25px;
+    }
+    .box .pinglun{
+    width: 290px;
+    height: 80px;
+    /*background-color: cyan;*/
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    }
+    .box .shijian{
+    width: 200px;
+    height: 25px;
+    /*background-color: green;*/
+    position: absolute;
+    top: 100px;
+    left:100px;
+    }
+</style>
+
+<script>
+    window.onload=function(){
+    var oTxt = document.getElementById("txt");
+    var oBtn = document.getElementById("btn1");
+    var oUl1 = document.getElementById("ul1");
+    oBtn.onclick=function(){
+    var oBox = document.createElement("div");
+    oBox.className = "box";
+
+    //创建头像
+    var oDiv = document.createElement("div");
+    oDiv.className = "touxiang";
+    oBox.appendChild(oDiv);
+    var oDiv = document.createElement("div");
+    oDiv.className = "nicheng";
+    oDiv.innerHTML = "白云鹏";
+    oBox.appendChild(oDiv);
+
+    var oDiv = document.createElement("div");
+    oDiv.className = "pinglun";
+    oDiv.innerHTML = oTxt.value;
+    oBox.appendChild(oDiv);
+    var oDiv = document.createElement("div");
+    oDiv.className = "shijian";
+    var oDate = new Date();
+    //oDate.getFullYear
+    oDiv.innerHTML ="评论时间  "+ oDate.getFullYear()+"年"+(oDate.getMonth()+1)+"月"+oDate.getDate()+"日"+"<a href='javascript:;'>删除</a>";
+    oBox.appendChild(oDiv);
+    oUl1.appendChild(oBox);
+    /*oBox.insertBefore(oUl1,oDiv[0]);*/
+    var aA = oDiv.getElementsByTagName("a");
+    for(var i = 0;i<aA.length;i++)
+    {
+    aA[i].onclick=function(){
+    oDiv.removeChild(this.parentNode);
+    }
+    }
+    }
+    }
+
+</script>
+<h2 align="center">当当书城用户评价</h2>
+<div id="div1" >
+    <textarea cols="70" rows="8" id="txt"></textarea><br />
+    <input type="button" value="评论" id="btn1" />
+    <ul id="ul1">
+    </ul>
+</div>
+
+

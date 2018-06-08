@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}当当书城-注册{% endblock title %}
+{% block topfiles %}{% endblock topfiles %}
+{% block header_con %}{% endblock header_con %}
+{% block search_bar %}{% endblock search_bar %}
+{% block body %}
+
+    <div class="register_con">
+        <div class="l_con fl">
+            <a href="{% url 'books:index' %}" class="reg_logo"><img src="/static/images/dangdanglogo.gif" style="width: 160px; height: 100px;"></a>
+            <div class="reg_slogan"></div>
+            <div class="reg_banner"></div>
+        </div>
+
+        <div class="r_con fr">
+            <div class="reg_title clearfix">
+                <h1>用户注册</h1>
+                <a href="{% url 'user:login' %}">登录</a>
+            </div>
+            <div class="reg_form clearfix">
+                <form method="post" action="/user/register_handle/">
+                    {% csrf_token %}
+                <ul>
+                    <li>
+                        <label>用户名:</label>
+                        <input type="text" name="user_name" id="user_name">
+                        <span class="error_tip">提示信息</span>
+                    </li>
+                    <li>
+                        <label>密码:</label>
+                        <input type="password" name="pwd" id="pwd">
+                        <span class="error_tip">提示信息</span>
+                    </li>
+                    <li>
+                        <label>确认密码:</label>
+                        <input type="password" name="cpwd" id="cpwd">
+                        <span class="error_tip">提示信息</span>
+                    </li>
+                    <li>
+                        <label>邮箱:</label>
+                        <input type="text" name="email" id="email">
+                        <span class="error_tip">提示信息</span>
+                    </li>
+                      <li>
+                        <label>手机号:</label>
+                        <input type="text" name="phone" id="phone">
+                        <div class="btn_check" >获取验证码</div>
+{#                        <button class="btn_check" type="submit">获取验证码</button>#}
+                        <span class="error_tip" >提示信息</span>
+                    </li>
+                    <li>
+                        <label>验证码:</label>
+                        <input type="text" name="number" id="number">
+                        <span class="error_tip">提示信息</span>
+                    </li>
+                    <li class="agreement">
+                        <input type="checkbox" name="allow" id="allow" checked="checked">
+                        <label>同意”当当书城用户使用协议“</label>
+                        <span class="error_tip2">提示信息</span>
+                    </li>
+                    <li class="reg_sub">
+                        <input type="submit" value="注 册" name="">
+                        {{errmsg}}
+                    </li>
+                </ul>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        $(function () {
+            $(".btn_check").click(function () {
+                var phone_num = $('#phone').val();
+                var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+                if(phone_num!=""&&phone_num!=null&&myreg.test(phone_num)){
+                   $.get("/user/getGetPhoneCheckNum/",{phone:phone_num},function(result){
+                       if (result.res == 200) {
+                           alert('success')
+                       }
+                    });
+                }
+                else {
+                    alert("请输入正确手机号");
+                }
+            });
+            $("#number").blur(function () {
+                var check_code = $('#number').val();
+                var phone_num = $('#phone').val();
+                if(check_code==""||phone_num==""){
+                    alert("请输入手机号或者验证码");
+                }else {
+                       $.get("/user/checkCode/",{code:check_code,phone:phone_num},function(result){
+                            if(result.res=="success"){
+                                    alert("验证码正确");
+                            }
+                            else {
+                                alert("验证码不正确");
+                            }
+                    });
+                }
+            })
+        });
+
+    </script>
+{% endblock body %}
